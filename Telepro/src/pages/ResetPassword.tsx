@@ -82,13 +82,13 @@ function ResetPassword() {
                       {error && <div className="auth__error">{error}</div>}
                       <form onSubmit={handleSubmit} className="justify-between">
                         <input
+                          className="form-control  bg-light text-dark-lighten h-full w-full rounded-lg border px-3 outline-none transition duration-300 focus:border-gray-300"
                           style={{
                             width: "250px",
                             height: "40px",
                             borderRadius: "5px",
                             marginRight: "10px",
                           }}
-                          className="form-border px-3"
                           type="email"
                           value={email}
                           required
