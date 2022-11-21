@@ -11,7 +11,7 @@ A full-feature messenger clone built with React and Firebase
 
 ## Features
 
-- Sign in with Google, Facebook
+- Sign in with Google, Facebook,email
 - Create conversations (personally, group)
 - Allow sending
   - Text
