@@ -1,10 +1,6 @@
 import { FC, FormEvent, useState } from "react";
 import { auth } from "../shared/firebase";
-import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 interface PhoneProps {
   isOpened: boolean;
@@ -17,9 +13,9 @@ const PhoneSignUp: FC<PhoneProps> = ({ isOpened, setIsOpened }) => {
   const [expandForm, setExpandForm] = useState(false);
   const [OTP, setOTP] = useState("");
 
-  const generateRecapcha = () => {
+  const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
-      "recapchar-container",
+      "recaptchar-container",
       {
         size: "invisible",
         callback: (response: string) => {
@@ -34,7 +30,7 @@ const PhoneSignUp: FC<PhoneProps> = ({ isOpened, setIsOpened }) => {
     e.preventDefault();
     if (phoneNumber.length >= 12) {
       setExpandForm(true);
-      generateRecapcha();
+      generateRecaptcha();
       let appVertifier = window.recaptchaVerifier;
       signInWithPhoneNumber(auth, phoneNumber, appVertifier)
         .then((confirmationResult) => {
@@ -140,7 +136,7 @@ const PhoneSignUp: FC<PhoneProps> = ({ isOpened, setIsOpened }) => {
               </>
             ) : null}
             {expandForm === false ? <div></div> : null}
-            <div id="recapchar-container"></div>
+            <div id="recaptchar-container"></div>
           </div>
         </div>
       </div>

@@ -1,15 +1,12 @@
 import { FC, FormEvent, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { auth, db } from "../shared/firebase";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   RecaptchaVerifier,
-  signInWithEmailAndPassword,
   signInWithPhoneNumber,
-  updateProfile,
 } from "firebase/auth";
-import { async } from "@firebase/util";
 import { useQueryParams } from "../hooks/useQueryParams";
 import { useStore } from "../store";
 import { doc, setDoc } from "firebase/firestore";
@@ -54,14 +51,6 @@ const SignUp: FC = () => {
         .catch((error) => {
           console.log(error);
         });
-      //   signInWithEmailAndPassword(auth, email, password)
-      //     .then(appVertifier)
-      //     .then((confirmationResult) => {
-      //       window.confirmationResult = confirmationResult;
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
     }
   };
   const vertifyOTP = (e: any) => {
@@ -81,9 +70,6 @@ const SignUp: FC = () => {
           onAuthStateChanged(auth, (users) => {
             if (users) {
               setCurrentUser(users);
-              //    updateProfile(res.user, {
-              //     phoneNumber: phoneNumber,
-              //   });
               setDoc(doc(db, "users", users.uid), {
                 uid: users.uid,
                 email: email,
@@ -271,9 +257,6 @@ const SignUp: FC = () => {
                       >
                         Please enter PIN
                       </label>
-                      {/* <div id="otpHelp" className="form-text text-dark ">
-              Please enter PIN
-            </div> */}
                     </div>
                   </>
                 ) : null}
