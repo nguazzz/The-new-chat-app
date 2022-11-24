@@ -1,14 +1,28 @@
-import { FC } from "react";
-import { IMAGE_PROXY } from "../../shared/constants";
+import { FC, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useLastMessage } from "../../hooks/useLastMessage";
+import { useUsersInfo } from "../../hooks/useUsersInfo";
+import { DEFAULT_AVATAR, IMAGE_PROXY, UNKNOWN } from "../../shared/constants";
+import { ConversationInfo } from "../../shared/types";
 import { useStore } from "../../store";
 
-interface UserInfoProps {
+interface FriendInfoProps {
   isOpened: boolean;
   setIsOpened: (value: boolean) => void;
+  conversation: ConversationInfo;
 }
 
-const UserInfo: FC<UserInfoProps> = ({ isOpened, setIsOpened }) => {
+const FriendInfo: FC<FriendInfoProps> = ({
+  isOpened,
+  setIsOpened,
+  conversation,
+}) => {
+  const { data: users, loading } = useUsersInfo(conversation.users);
   const currentUser = useStore((state) => state.currentUser);
+
+  const filtered = users?.filter((user) => user.id !== currentUser?.uid);
+
+  const { id } = useParams();
 
   return (
     <div
@@ -41,25 +55,42 @@ const UserInfo: FC<UserInfoProps> = ({ isOpened, setIsOpened }) => {
           <div className="flex gap-4">
             <img
               className="h-30 w-30 rounded-full object-cover"
-              src={IMAGE_PROXY(currentUser?.photoURL as string)}
+              src={
+                filtered?.[0]?.data()?.photoURL
+                  ? IMAGE_PROXY(filtered?.[0]?.data()?.photoURL)
+                  : DEFAULT_AVATAR
+              }
               alt=""
             />
             <div className="">
               <h1 className="text-dark-lighten text-xl">
-                {currentUser?.displayName}
+                {filtered?.[0].data()?.displayName
+                  ? filtered?.[0].data()?.displayName
+                  : UNKNOWN}
               </h1>
-              <p className="text-dark-lighten">ID: {currentUser?.uid}</p>
               <p className="text-dark-lighten">
-                Email: {currentUser?.email || "None"}
+                ID:{" "}
+                {filtered?.[0].data()?.uid
+                  ? filtered?.[0].data()?.uid
+                  : UNKNOWN}
               </p>
               <p className="text-dark-lighten">
-                Phone Number: {currentUser?.phoneNumber || "None"}
+                Email:{" "}
+                {filtered?.[0].data()?.email
+                  ? filtered?.[0].data()?.email
+                  : UNKNOWN}
+              </p>
+              <p className="text-dark-lighten">
+                Phone Number:{" "}
+                {filtered?.[0].data()?.phoneNumber
+                  ? filtered?.[0].data()?.phoneNumber
+                  : UNKNOWN}
               </p>
             </div>
           </div>
 
           <p className="mt-4 text-gray-500">
-            Change your google / facebook avatar or username to update it here
+            Change google / facebook avatar or username to update it here
           </p>
         </div>
       </div>
@@ -67,4 +98,4 @@ const UserInfo: FC<UserInfoProps> = ({ isOpened, setIsOpened }) => {
   );
 };
 
-export default UserInfo;
+export default FriendInfo;
