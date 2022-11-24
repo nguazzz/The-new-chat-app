@@ -9,7 +9,7 @@ import ViewGroup from "../Group/ViewGroup";
 import ViewMedia from "../Media/ViewMedia";
 import { useStore } from "../../store";
 import { useUsersInfo } from "../../hooks/useUsersInfo";
-import UserInfo from "../Home/UserInfo";
+import FriendInfo from "../Home/FriendInfo";
 
 interface ChatHeaderProps {
   conversation: ConversationInfo;
@@ -25,7 +25,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ conversation }) => {
     useState(false);
   const [isGroupMembersOpened, setIsGroupMembersOpened] = useState(false);
   const [isViewMediaOpened, setIsViewMediaOpened] = useState(false);
-  const [isUserInfoOpened, setIsUserInfoOpened] = useState(false);
+  const [isFriendInfoOpened, setIsFriendInfoOpened] = useState(false);
 
   return (
     <>
@@ -41,7 +41,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ conversation }) => {
               {conversation.users.length === 2 ? (
                 <button
                   onClick={() => {
-                    setIsUserInfoOpened(true);
+                    setIsFriendInfoOpened(true);
                   }}
                   className="hover:bg-lighten flex items-center gap-1 rounded-full px-2 py-2 transition duration-300"
                 >
@@ -153,7 +153,11 @@ const ChatHeader: FC<ChatHeaderProps> = ({ conversation }) => {
         />
       )}
       {isViewMediaOpened && <ViewMedia setIsOpened={setIsViewMediaOpened} />}
-      <UserInfo isOpened={isUserInfoOpened} setIsOpened={setIsUserInfoOpened} />
+      <FriendInfo
+        isOpened={isFriendInfoOpened}
+        setIsOpened={setIsFriendInfoOpened}
+        conversation={conversation}
+      />
     </>
   );
 };
